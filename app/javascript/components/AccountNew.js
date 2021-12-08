@@ -17,6 +17,7 @@ const AccountNew = ({ account }) => {
         <input
           placeholder="Balance"
           type="number"
+          step="0.01"
           defaultValue={defaultBalance}
           name="account[balance]"
         />

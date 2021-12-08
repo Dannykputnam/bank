@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_account, only: [:show, :edit, :update, :destroy]
   def index
     # not doing this way
@@ -29,12 +30,23 @@ class AccountsController < ApplicationController
   end
 
   def edit
+    render component: 'AccountEdit', props: {user: current_user, account: @account}
   end
 
   def update 
+    if @account.update(account_params)
+      flash[:success] = Account: #{account.name} update"
+      redirect_to root_path
+    else
+      flash[:error] = "Error #{account.errors.full_messages.join("/n")} update"
+      render component 'AccountEdit', props: {user: current_user, account: @account }
+    end
   end
 
   def destroy
+    @account.destroy
+    redirect_to root_path
+    flash[:succes]= "Account Deleted"
 
   end
 
